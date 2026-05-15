@@ -9,5 +9,5 @@ package GestionTicket;
  * @author ezayr
  */
 public class Ticket {
-    
+    //´Datos a lllenarr al confirmar que funcione bien el codigo
 }
