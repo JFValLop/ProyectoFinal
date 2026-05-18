@@ -52,7 +52,7 @@ public class CreateConnection {
             String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database + "?sslmode=disable";
 
             conn = DriverManager.getConnection(jdbcUrl, username, password);
-            System.out.println("✅ Conexión establecida");
+            System.out.println("Conexión establecida");
         } catch (SQLException ex) {
             Logger.getLogger(CreateConnection.class.getName()).log(Level.SEVERE, "Error de SQL", ex);
         }
