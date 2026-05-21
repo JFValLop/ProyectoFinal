@@ -106,4 +106,8 @@ public class Partido {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+    @Override
+public String toString() {
+    return equipoLocal + " vs " + equipoVisitante;
+}
 }

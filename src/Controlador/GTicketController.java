@@ -8,87 +8,76 @@ package Controlador;
  *
  * @author ezayr
  */
-import Conexion.CreateConnection;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-//import modelo.Partido;
-import modelo.Ticket;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ResourceBundle;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 
-public class GTicketController implements Initializable {
+import DAO.GestionTicketDAO;
+import Modelo.Ticket;
+import java.util.List;
 
-    @FXML
-    private ComboBox<Partido> cboPartido;
-    @FXML
-    private TextField txtAsiento;
-    @FXML
-    private ComboBox cboSeccion;
-    @FXML
-    private TextField txtPrecio;
-    @FXML
-    private ComboBox cboEstado;
+/**
+ * Controlador de lógica de negocio para Tickets.
+ * Solo maneja reglas de negocio y delega al DAO.
+ * NO contiene ninguna referencia a JavaFX.
+ */
+public class GTicketController {
 
-    @FXML
-    private Button btnGuardar;
-    @FXML
-    private Button btnModificar;
-    @FXML
-    private Button btnEliminar;
-    @FXML
-    private Button btnLimpiar;
+    private final GestionTicketDAO dao = new GestionTicketDAO();
 
-    @FXML
-    private TableView<Ticket> tablaTicket;
-    @FXML
-    private TableColumn<Ticket, Integer> colId;
-    @FXML
-    private TableColumn<Ticket, String> colPartido;
-    @FXML
-    private TableColumn<Ticket, String> colAsiento;
-    @FXML
-    private TableColumn<Ticket, String> colSeccion;
-    @FXML
-    private TableColumn<Ticket, Double> colPrecio;
-    @FXML
-    private TableColumn<Ticket, String> colEstado;
+    public boolean registrarTicket(int partidoId, String asiento,
+                                   String seccion, String precioStr, String estado) {
+        try {
+            if (asiento == null || asiento.trim().isEmpty()) {
+                System.out.println("El número de asiento no puede estar vacío.");
+                return false;
+            }
 
-    //LAS VARIABLES PARA LA CNEXION
-    CreateConnection neon = new CreateConnection();
-    Connection cn;
-    PreparedStatement ps;
-    ResultSet rs;
-    String qry = "";
+            double precio = Double.parseDouble(precioStr);
 
-    int idSeleccionado = 0;
-    ObservableList<Ticket> listaTabla = FXCollections.observableArrayList();
+            Ticket t = new Ticket();
+            t.setPartidoId(partidoId);
+            t.setNumeroAsiento(asiento.trim());
+            t.setSeccion(seccion);
+            t.setPrecio(precio);
+            t.setEstado(estado);
 
-    @Override
-    //llenar combos
-    public void initialize(URL url, ResourceBundle rb) {
-        txtPrecio.setEditable(False);//para que nadie edite el precio
-        cn = neon.getConnection();
-        //para llenar el apartado de seccion
-        cboSeccion.setItems(FXCollections.observableArrayList("VIP", "Preferencial", "general"));
-        cboSeccion.getSelectionModel().selectFirst();
-        //para llenar el apartado de Estado
-        cboEstado.setItems(FXCollections.observableArrayList("DISPONIBLE", "VENDIDO", "RESERVADO"));
-        cboEstado.getSelectionModel().selectFirst(); // Selecciona "DISPONIBLE" por defecto por el momento se queda así
-        
-        //configuracion de las columnas de la tabla
-        
+            return dao.insertar(t);
 
+        } catch (NumberFormatException e) {
+            System.out.println("Precio inválido: " + e.getMessage());
+            return false;
+        }
     }
 
+    public boolean modificarTicket(int id, int partidoId, String asiento,
+                                   String seccion, String precioStr, String estado) {
+        try {
+            if (asiento == null || asiento.trim().isEmpty()) {
+                System.out.println("El número de asiento no puede estar vacío.");
+                return false;
+            }
 
+            double precio = Double.parseDouble(precioStr);
 
+            Ticket t = new Ticket();
+            t.setId(id);
+            t.setPartidoId(partidoId);
+            t.setNumeroAsiento(asiento.trim());
+            t.setSeccion(seccion);
+            t.setPrecio(precio);
+            t.setEstado(estado);
+
+            return dao.modificar(t);
+
+        } catch (NumberFormatException e) {
+            System.out.println("Precio inválido: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean eliminarTicket(int id) {
+        return dao.eliminar(id);
+    }
+
+    public List<Ticket> obtenerTickets() {
+        return dao.listar();
+    }
 }

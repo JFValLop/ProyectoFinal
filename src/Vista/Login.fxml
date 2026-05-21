@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControladorFX.LoginControlador">
+   <children>
+      <TextField fx:id="txtUsuario" layoutX="255.0" layoutY="188.0" prefHeight="25.0" prefWidth="289.0" />
+      <PasswordField fx:id="pfContrasena" layoutX="255.0" layoutY="225.0" prefHeight="25.0" prefWidth="289.0" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="62.0" prefHeight="94.0" prefWidth="501.0" text="INICIO DE SESION" textAlignment="CENTER">
+         <font><Font name="System Bold" size="32.0" /></font>
+      </Label>
+      <Button fx:id="btnLogin" layoutX="340.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="38.0" prefWidth="120.0" text="LOGIN" />
+      <Label fx:id="lblForget" alignment="CENTER" layoutX="224.0" layoutY="375.0" onMouseClicked="#handleLabelClick" onMouseEntered="#handleLabelEntrar" onMouseExited="#handleLabelSalir" prefHeight="38.0" prefWidth="351.0" text="OLVIDE LA CONTRASENA" textFill="#006dff" />
+   </children>
+</Pane>

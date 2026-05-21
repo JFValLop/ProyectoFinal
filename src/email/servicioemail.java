@@ -10,22 +10,23 @@ import java.io.InputStream;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-/**
- *
- * @author juanf
- */
 public class servicioemail {
-    
+
     private String remitente;
     private String clave;
     private String host;
     private String port;
 
     public servicioemail() throws IOException {
+        InputStream input = getClass().getResourceAsStream("/email/email.properties");
+
+        if (input == null) {
+            throw new IOException("No se encontró email.properties en el classpath.");
+        }
+
         Properties props = new Properties();
-        InputStream input = getClass().getClassLoader()
-                            .getResourceAsStream("email.properties");
         props.load(input);
+        input.close();
 
         this.remitente = props.getProperty("mail.remitente");
         this.clave     = props.getProperty("mail.clave");
@@ -41,6 +42,7 @@ public class servicioemail {
         props.put("mail.smtp.starttls.enable", "true");
 
         Session session = Session.getInstance(props, new Authenticator() {
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(remitente, clave);
             }
@@ -55,9 +57,8 @@ public class servicioemail {
             Transport.send(msg);
             return true;
         } catch (MessagingException e) {
-            System.out.println("Error email: " + e.getMessage());
+            System.out.println("Error al enviar email: " + e.getMessage());
             return false;
         }
     }
-    
 }
